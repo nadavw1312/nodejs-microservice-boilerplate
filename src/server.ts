@@ -1,11 +1,12 @@
+import "module-alias/register";
 import app from "./app";
-import config from "./config";
-import logger from "./utils/logger";
+import logger from "@utils/logger";
+import config from "@/config";
 
 let server: any;
 
-server = app.listen(config.port, () => {
-  logger.info(`Listening to port ${config.port}`);
+server = app.listen(config.PORT, () => {
+  logger.info(`Listening to port ${config.PORT}`);
 });
 
 const exitHandler = () => {

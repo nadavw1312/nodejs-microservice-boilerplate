@@ -19,4 +19,4 @@ class ErrorsBl {
   }
 }
 
-export const errorsBl = new ErrorsBl();
+export default new ErrorsBl();

@@ -4,7 +4,7 @@ import helmet from "helmet";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import routes from "./routes/v1";
 import httpStatus from "http-status";
-import { errorConverter, errorHandler } from "./utils/errors/error";
+import { errorConverter, errorHandler } from "./middlewares/error-middleware";
 
 const app: Express = express();
 

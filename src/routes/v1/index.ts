@@ -1,6 +1,6 @@
-import express, { Router } from "express";
+import * as express from "express";
 import serviceRoute from "./service.route";
-const router: Router = express.Router();
+const router: express.Router = express.Router();
 
 const routes = [
   {

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Request, Response, NextFunction } from "express";
-import mongoose from "mongoose";
 import httpStatus from "http-status";
-import ApiError from "./ApiError";
-import config from "../../config";
-import logger from "../logger";
+import ApiError from "@/utils/errors/ApiError";
+
+import config from "../config";
+import logger from "../utils/logger";
+import errorsBl from "@/features/errors/errors-bl";
 
 export const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = err;
@@ -18,10 +19,17 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
 };
 
 // eslint-disable-next-line no-unused-vars
-export const errorHandler = (err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
+export const errorHandler = async (err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
   let { statusCode, message } = err;
-  
-  if (config.env === "production" && !err.isOperational) {
+  let errorId;
+
+  try {
+    errorId = await errorsBl.createApiError({ message, stack: err.stack, req: _req });
+  } catch (error) {
+    logger.warn(`Failed to insert error to db, \n ${error.toString()}`);
+  }
+
+  if (config.NODE_ENV === "prod" && !err.isOperational) {
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     message = "Internal Server Error";
   }
@@ -31,12 +39,13 @@ export const errorHandler = (err: ApiError, _req: Request, res: Response, _next:
   const response = {
     code: statusCode,
     message,
-    ...(config.env === "development" && {
+    errorId,
+    ...(config.NODE_ENV === "dev" && {
       stack: err.stack,
     }),
   };
 
-  if (config.env === "development") {
+  if (config.NODE_ENV === "dev") {
     logger.error(err);
   }
 

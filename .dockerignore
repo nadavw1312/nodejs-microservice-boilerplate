@@ -1,0 +1,13 @@
+docker/
+node_modules/
+src/
+.git/
+public/
+.dockerignore
+.eslintrc.js
+.gitignore
+.gitattributes
+Dockerfile
+README.md
+npm-debug.log
+tsconfig.json
