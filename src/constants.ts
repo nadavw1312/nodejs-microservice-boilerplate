@@ -2,6 +2,9 @@ const consts = {
   collections: {
     errors: "errors",
   },
+  errors: {
+    notAuth: "Not Authorized",
+  },
   schemaType: {
     regularString: {
       type: "string",
@@ -21,3 +24,4 @@ const consts = {
 };
 
 export default consts;
+

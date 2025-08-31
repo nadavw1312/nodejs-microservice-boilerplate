@@ -1,0 +1,427 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Product": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"title": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"supplier": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"active",
+							"draft",
+							"archived"
+						]
+					}
+				},
+				"required": [
+					"title",
+					"description",
+					"price",
+					"supplier",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "Operation success status"
+					},
+					"data": {
+						"$ref": "#/components/schemas/Product",
+						"description": "Product data"
+					}
+				},
+				"required": [
+					"success",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateProductRequest": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "Product title"
+					},
+					"description": {
+						"type": "string",
+						"description": "Product description"
+					},
+					"price": {
+						"type": "number",
+						"format": "double",
+						"description": "Product price"
+					},
+					"supplier": {
+						"type": "string",
+						"description": "Supplier identifier"
+					}
+				},
+				"required": [
+					"title",
+					"description",
+					"price",
+					"supplier"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UpdateProductRequest": {
+				"properties": {
+					"title": {
+						"type": "string",
+						"description": "Product title"
+					},
+					"description": {
+						"type": "string",
+						"description": "Product description"
+					},
+					"price": {
+						"type": "number",
+						"format": "double",
+						"description": "Product price"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"active",
+							"draft",
+							"archived"
+						],
+						"description": "Product status"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ProductsListResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean",
+						"description": "Operation success status"
+					},
+					"data": {
+						"items": {
+							"$ref": "#/components/schemas/Product"
+						},
+						"type": "array",
+						"description": "List of products"
+					},
+					"total": {
+						"type": "number",
+						"format": "double",
+						"description": "Total number of products"
+					},
+					"page": {
+						"type": "number",
+						"format": "double",
+						"description": "Current page number"
+					},
+					"limit": {
+						"type": "number",
+						"format": "double",
+						"description": "Number of items per page"
+					}
+				},
+				"required": [
+					"success",
+					"data",
+					"total",
+					"page",
+					"limit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"HealthResponse": {
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": [
+							"ok",
+							"error"
+						],
+						"description": "The status of the service"
+					}
+				},
+				"required": [
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"PingResponse": {
+				"properties": {
+					"timestamp": {
+						"type": "string",
+						"description": "ISO timestamp of the server"
+					}
+				},
+				"required": [
+					"timestamp"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "backend",
+		"version": "1.0.0",
+		"description": "��",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/products": {
+			"post": {
+				"operationId": "CreateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a new product",
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"description": "Product creation data",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateProductRequest",
+								"description": "Product creation data"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductsListResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "List products with pagination",
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Page number",
+						"in": "query",
+						"name": "page",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"description": "Items per page",
+						"in": "query",
+						"name": "limit",
+						"required": false,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/products/{id}": {
+			"get": {
+				"operationId": "GetProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a product by ID",
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Product ID",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "UpdateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProductResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update a product",
+				"tags": [
+					"Products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "Product ID",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Product update data",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateProductRequest",
+								"description": "Product update data"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/health": {
+			"get": {
+				"operationId": "GetHealth",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/HealthResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Check if the service is healthy",
+				"tags": [
+					"Health"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/health/ping": {
+			"get": {
+				"operationId": "Ping",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PingResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get server timestamp",
+				"tags": [
+					"Health"
+				],
+				"security": [],
+				"parameters": []
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	],
+	"tags": [
+		{
+			"name": "Health",
+			"description": "System health and status endpoints"
+		},
+		{
+			"name": "Products",
+			"description": "Product management endpoints"
+		}
+	]
+}

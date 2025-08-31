@@ -1,8 +1,14 @@
 {
-  "name": "nodejs-microservice-boilerplate",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "��",
   "main": "index.js",
+  "_moduleAliases": {
+    "@": "dist",
+    "@features": "dist/features",
+    "@utils": "dist/utils",
+    "@middlewares": "dist/middlewares"
+  },
   "scripts": {
     "start": "node dist/server.js",
     "start-dev": "NODE_ENV=dev node dist/server.js",
@@ -10,7 +16,8 @@
     "start-prod": "NODE_ENV=prod node dist/server.js",
     "watch-ts": "npm run clean && tsc -w",
     "clean": "del-cli dist/**/*",
-    "build": "npm run clean && npx tsc",
+    "build": "npm run clean && npm run swagger:generate && npx tsc",
+    "swagger:generate": "tsoa spec-and-routes",
     "#################### Docker ###################################": "",
     "build-docker-dev-app": "docker-compose -f docker-compose-dev-app.yml build",
     "build-docker-qa-app": "docker-compose -f docker-compose-qa-app.yml build",
@@ -18,8 +25,11 @@
     "start-docker-dev": "docker-compose -f docker-compose-dev-app.yml up"
   },
   "dependencies": {
+    "@types/mongoose": "^5.11.96",
+    "@types/multer": "^2.0.0",
     "amqplib": "^0.10.3",
     "bcrypt": "^5.1.1",
+    "concurrently": "^9.2.1",
     "cors": "^2.8.5",
     "del-cli": "^5.1.0",
     "dotenv": "^16.3.1",
@@ -27,11 +37,19 @@
     "express-mongo-sanitize": "^2.2.0",
     "helmet": "^7.0.0",
     "http-status": "^1.7.0",
+    "inversify": "^7.9.1",
     "joi": "^17.10.1",
     "jsonwebtoken": "^9.0.2",
     "lodash.clonedeep": "^4.5.0",
     "module-alias": "^2.2.3",
     "mongodb": "^6.2.0",
+    "mongoose": "^8.18.0",
+    "reflect-metadata": "^0.2.2",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.1",
+    "ts-node": "^10.9.2",
+    "tsoa": "^6.6.0",
+    "tsyringe": "^4.10.0",
     "typescript": "^5.2.2",
     "uuid": "^9.0.1",
     "winston": "^3.10.0"
@@ -41,15 +59,9 @@
     "@types/cors": "^2.8.15",
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.4",
-    "@types/node": "^20.8.9",
+    "@types/node": "^18.19.123",
+    "@types/swagger-ui-express": "^4.1.8",
     "tsconfig-paths": "^4.2.0"
-  },
-  "_moduleAliases": {
-    "@root": ".",
-    "@": "dist",
-    "@features": "dist/features",
-    "@utils": "dist/utils",
-    "@middlewares": "dist/middlewares"
   },
   "keywords": [],
   "author": "",

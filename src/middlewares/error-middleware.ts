@@ -5,7 +5,6 @@ import ApiError from "@/utils/errors/ApiError";
 
 import config from "../config";
 import logger from "../utils/logger";
-import errorsBl from "@/features/errors/errors-bl";
 
 export const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
   let error = err;
@@ -24,7 +23,7 @@ export const errorHandler = async (err: ApiError, _req: Request, res: Response, 
   let errorId;
 
   try {
-    errorId = await errorsBl.createApiError({ message, stack: err.stack, req: _req });
+    // errorId = await errorsBl.createApiError({ message, stack: err.stack, req: _req });
   } catch (error) {
     logger.warn(`Failed to insert error to db, \n ${error.toString()}`);
   }
@@ -33,8 +32,6 @@ export const errorHandler = async (err: ApiError, _req: Request, res: Response, 
     statusCode = httpStatus.INTERNAL_SERVER_ERROR;
     message = "Internal Server Error";
   }
-
-  res.locals["errorMessage"] = err.message;
 
   const response = {
     code: statusCode,

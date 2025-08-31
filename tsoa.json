@@ -1,0 +1,26 @@
+{
+  "entryFile": "src/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/**/*controller.ts"],
+  "spec": {
+    "outputDirectory": "src",
+    "specVersion": 3,
+    "basePath": "/api/v1",
+    "tags": [
+      {
+        "name": "Health",
+        "description": "System health and status endpoints"
+      },
+      {
+        "name": "Products",
+        "description": "Product management endpoints"
+      }
+    ]
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "basePath": "/api/v1",
+    "middleware": "express",
+    "iocModule": "src/ioc"
+  }
+}

@@ -5,6 +5,7 @@
   },
   "compilerOptions": {
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "outDir": "dist",
     "lib": ["es5", "es2015", "dom", "scripthost"],
     "target": "es2018",
@@ -14,6 +15,7 @@
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -23,5 +25,5 @@
     }
   },
   "exclude": ["node_modules", "tools"],
-  "include": ["src/**/*.ts", "./src"]
+  "include": ["src/**/*.ts", "./src", "src/**/*.json"]
 }
